@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ani Audio Studio</title>
+    <title>Ani Audio Studio - English Department</title>
     
+    <!-- WhatsApp & Social Media Preview Meta Tags (Open Graph) -->
+    <meta property="og:title" content="Ani Audio Studio - English Department">
+    <meta property="og:description" content="Audio lectures, notes, and syllabus audio resources for English Literature students.">
+    <meta property="og:image" content="https://res.cloudinary.com/hpejutzb/image/upload/v1784702297/logo.png">
+    <meta property="og:url" content="https://aniaudiostudio.com">
+    <meta property="og:type" content="website">
+
     <!-- PWA Web App Manifest -->
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFuaSBBdWRpbyBTdHVkaW8iLAogICJzaG9ydF9uYW1lIjogIkFuaSBBdWRpbyIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxMjEyMTIiLAogICJ0aGVtZV9jb2xvcIjogIiMxREI5NTQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcud2lkZW1hcC5jb201MTIvMjg4Ni8yODg2Njc0LnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
     <meta name="theme-color" content="#121212">
@@ -31,22 +38,18 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- JSZip and FileSaver for Bulk ZIP Downloads -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
     <style>
-        /* Smooth Drawer Slide Animations */
-        .drawer-overlay {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .drawer-content {
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        /* Hide scrollbars for slick look */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        /* Smooth Animations */
+        .drawer-overlay { transition: opacity 0.3s ease-in-out; }
+        .drawer-content { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .track-card { transition: all 0.2s ease-in-out; }
+        .track-card:hover { transform: translateY(-1px); }
     </style>
 </head>
 <body class="bg-slate-50 dark:bg-spotifyDark text-slate-900 dark:text-white font-sans antialiased selection:bg-spotify selection:text-black transition-colors duration-200">
@@ -57,7 +60,7 @@
         <aside class="w-64 bg-slate-100 dark:bg-black p-6 flex-col justify-between hidden md:flex border-r border-slate-200 dark:border-neutral-800">
             <div>
                 <div class="flex items-center space-x-3 mb-8">
-                    <div class="w-10 h-10 rounded-full bg-spotify flex items-center justify-center text-black font-bold text-xl">A</div>
+                    <div class="w-10 h-10 rounded-full bg-spotify flex items-center justify-center text-black font-bold text-xl shadow-md">A</div>
                     <div>
                         <h1 class="font-bold text-lg leading-none">Ani Audio</h1>
                         <p class="text-xs text-slate-500 dark:text-neutral-400 mt-1">English Department</p>
@@ -68,7 +71,7 @@
             </div>
 
             <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-neutral-800">
-                <button id="pwaInstallBtnDesktop" class="hidden w-full bg-spotify text-black text-xs font-bold py-2.5 px-4 rounded-full flex items-center justify-center space-x-2">
+                <button id="pwaInstallBtnDesktop" class="w-full bg-spotify hover:brightness-110 transition text-black text-xs font-bold py-2.5 px-4 rounded-full flex items-center justify-center space-x-2 shadow-sm">
                     <i class="fa-solid fa-download"></i>
                     <span>Install App</span>
                 </button>
@@ -92,10 +95,14 @@
                 </div>
                 
                 <div class="flex items-center space-x-2">
+                    <button id="pwaInstallBtnTopMobile" class="bg-spotify/20 text-spotify hover:bg-spotify hover:text-black font-bold text-xs px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1">
+                        <i class="fa-solid fa-down-to-bracket"></i>
+                        <span>App</span>
+                    </button>
                     <button onclick="toggleTheme()" class="p-2 rounded-full bg-slate-300 dark:bg-neutral-800 text-xs">
                         <i id="themeIconMobile" class="fa-solid fa-moon"></i>
                     </button>
-                    <!-- Subject Selector Trigger Switch -->
+                    <!-- Subject Selector Switch -->
                     <button onclick="openSubjectDrawer()" class="bg-spotify text-black font-bold text-xs px-3 py-2 rounded-xl flex items-center space-x-2 shadow-md">
                         <i class="fa-solid fa-book-open"></i>
                         <span id="mobileSubjectBtnLabel">Choose Subject</span>
@@ -110,7 +117,7 @@
                     <i class="fa-solid fa-mobile-screen text-spotify text-lg"></i>
                     <span class="text-xs font-semibold">Install Ani Audio app on your phone</span>
                 </div>
-                <button id="pwaInstallBtnMobile" class="bg-spotify text-black text-xs font-bold px-3 py-1.5 rounded-lg">Install</button>
+                <button id="pwaInstallBtnMobile" class="bg-spotify text-black text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">Install</button>
             </div>
 
             <!-- Subject Banner Header -->
@@ -124,9 +131,9 @@
                 </div>
                 
                 <!-- Bulk Section Download Button -->
-                <button onclick="downloadEntireSection()" class="w-full md:w-auto bg-spotify hover:scale-105 transition-transform text-black font-bold px-5 py-2.5 rounded-xl md:rounded-full flex items-center justify-center space-x-2 shadow-md text-sm">
-                    <i class="fa-solid fa-cloud-arrow-down"></i>
-                    <span>Download All Section Audios</span>
+                <button id="bulkDownloadBtn" onclick="downloadEntireSection()" class="w-full md:w-auto bg-spotify hover:scale-105 active:scale-95 transition text-black font-bold px-5 py-2.5 rounded-xl md:rounded-full flex items-center justify-center space-x-2 shadow-md text-sm">
+                    <i id="bulkDownloadIcon" class="fa-solid fa-cloud-arrow-down"></i>
+                    <span id="bulkDownloadBtnText">Download All Section Audios (ZIP)</span>
                 </button>
             </div>
 
@@ -139,13 +146,9 @@
 
     <!-- Mobile Subject Selection Drawer / Modal -->
     <div id="subjectDrawer" class="fixed inset-0 z-50 pointer-events-none">
-        <!-- Backdrop -->
         <div id="drawerOverlay" onclick="closeSubjectDrawer()" class="drawer-overlay absolute inset-0 bg-black/60 opacity-0 transition-opacity"></div>
-        
-        <!-- Sheet Container -->
         <div id="drawerContent" class="drawer-content absolute bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 rounded-t-3xl p-6 border-t border-slate-200 dark:border-neutral-800 transform translate-y-full pointer-events-auto max-h-[80vh] overflow-y-auto">
             <div class="w-12 h-1.5 bg-slate-300 dark:bg-neutral-700 rounded-full mx-auto mb-5"></div>
-            
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-bold text-lg flex items-center space-x-2">
                     <i class="fa-solid fa-list-check text-spotify"></i>
@@ -155,15 +158,12 @@
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
-
             <div class="space-y-2.5" id="mobileDrawerNav"></div>
         </div>
     </div>
 
     <!-- Sticky Bottom Player -->
     <footer class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-slate-200 dark:border-neutral-800 p-3 md:px-6 flex flex-col md:flex-row items-center justify-between gap-2 z-40">
-        
-        <!-- Currently Playing Info -->
         <div class="flex items-center justify-between w-full md:w-1/4">
             <div class="flex items-center space-x-3 overflow-hidden">
                 <div class="w-10 h-10 md:w-12 md:h-12 bg-spotify/20 text-spotify rounded-xl flex-shrink-0 flex items-center justify-center font-bold text-lg">
@@ -175,23 +175,20 @@
                 </div>
             </div>
             
-            <!-- Mobile Direct Play/Pause Button -->
-            <button id="mobilePlayBtn" onclick="togglePlay()" class="md:hidden w-10 h-10 rounded-full bg-spotify text-black flex items-center justify-center flex-shrink-0">
+            <button id="mobilePlayBtn" onclick="togglePlay()" class="md:hidden w-10 h-10 rounded-full bg-spotify text-black flex items-center justify-center flex-shrink-0 shadow">
                 <i class="fa-solid fa-play text-sm"></i>
             </button>
         </div>
 
-        <!-- Central Player Controls -->
         <div class="flex flex-col items-center w-full md:w-2/4">
             <div class="hidden md:flex items-center space-x-6 mb-1">
-                <button onclick="playPrevTrack()" class="text-slate-400 hover:text-black dark:hover:text-white"><i class="fa-solid fa-backward-step"></i></button>
-                <button id="mainPlayBtn" onclick="togglePlay()" class="w-10 h-10 rounded-full bg-spotify text-black flex items-center justify-center hover:scale-105 transition">
+                <button onclick="playPrevTrack()" class="text-slate-400 hover:text-black dark:hover:text-white transition"><i class="fa-solid fa-backward-step"></i></button>
+                <button id="mainPlayBtn" onclick="togglePlay()" class="w-10 h-10 rounded-full bg-spotify text-black flex items-center justify-center hover:scale-105 transition shadow">
                     <i class="fa-solid fa-play text-sm"></i>
                 </button>
-                <button onclick="playNextTrack()" class="text-slate-400 hover:text-black dark:hover:text-white"><i class="fa-solid fa-forward-step"></i></button>
+                <button onclick="playNextTrack()" class="text-slate-400 hover:text-black dark:hover:text-white transition"><i class="fa-solid fa-forward-step"></i></button>
             </div>
             
-            <!-- Progress Bar -->
             <div class="flex items-center space-x-3 w-full max-w-md text-[11px] text-slate-500 dark:text-neutral-400 mt-1 md:mt-0">
                 <span id="currentTime">0:00</span>
                 <input type="range" id="progressBar" value="0" min="0" max="100" class="w-full h-1 bg-slate-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-spotify">
@@ -199,20 +196,17 @@
             </div>
         </div>
 
-        <!-- Desktop Volume & Quick Actions -->
         <div class="hidden md:flex items-center justify-end space-x-3 w-1/4 text-slate-400">
             <i class="fa-solid fa-volume-high text-xs"></i>
             <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1" class="w-20 h-1 bg-slate-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-spotify">
-            <a id="playerDownloadBtn" href="#" download class="hover:text-spotify ml-4 text-slate-700 dark:text-white"><i class="fa-solid fa-download"></i></a>
+            <button id="playerDownloadBtn" onclick="downloadCurrentTrack()" class="hover:text-spotify ml-4 text-slate-700 dark:text-white transition"><i class="fa-solid fa-download"></i></button>
         </div>
-
     </footer>
 
     <!-- Audio Element -->
     <audio id="audioEngine"></audio>
 
     <script>
-        // Data Schema with Relative Folder Paths
         const syllabusData = {
             "MJC-5": {
                 title: "MJC-5: American Literature",
@@ -289,7 +283,6 @@
 
         const audio = document.getElementById('audioEngine');
 
-        // Application Startup
         window.addEventListener('DOMContentLoaded', () => {
             initTheme();
             renderNavs();
@@ -299,56 +292,44 @@
             setupPWA();
         });
 
-        // Theme Initialization & Switching
+        // Theme Configuration
         function initTheme() {
             const savedTheme = localStorage.getItem('ani_theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.documentElement.classList.remove('dark');
-            } else {
-                document.documentElement.classList.add('dark');
-            }
+            if (savedTheme === 'light') document.documentElement.classList.remove('dark');
+            else document.documentElement.classList.add('dark');
             updateThemeIcons();
         }
 
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
-            const isDark = document.documentElement.classList.contains('dark');
-            localStorage.setItem('ani_theme', isDark ? 'dark' : 'light');
+            localStorage.setItem('ani_theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             updateThemeIcons();
         }
 
         function updateThemeIcons() {
-            const isDark = document.documentElement.classList.contains('dark');
-            const iconClass = isDark ? 'fa-moon' : 'fa-sun';
+            const iconClass = document.documentElement.classList.contains('dark') ? 'fa-moon' : 'fa-sun';
             document.getElementById('themeIcon').className = `fa-solid ${iconClass}`;
             document.getElementById('themeIconMobile').className = `fa-solid ${iconClass}`;
         }
 
-        // Render Desktop & Mobile Navigation Links
+        // Navigation Renderer
         function renderNavs() {
             const desktopNav = document.getElementById('desktopNav');
             const drawerNav = document.getElementById('mobileDrawerNav');
-            
-            desktopNav.innerHTML = '';
-            drawerNav.innerHTML = '';
+            desktopNav.innerHTML = ''; drawerNav.innerHTML = '';
 
             Object.keys(syllabusData).forEach(key => {
                 const isSelected = key === currentSectionKey;
 
-                // Desktop Nav Item
                 const dBtn = document.createElement('button');
-                dBtn.className = `w-full text-left px-4 py-3 rounded-xl font-semibold flex items-center space-x-3 transition ${isSelected ? 'bg-spotify text-black font-bold' : 'text-slate-600 dark:text-neutral-400 hover:bg-slate-200 dark:hover:bg-neutral-900'}`;
+                dBtn.className = `w-full text-left px-4 py-3 rounded-xl font-semibold flex items-center space-x-3 transition ${isSelected ? 'bg-spotify text-black font-bold shadow-sm' : 'text-slate-600 dark:text-neutral-400 hover:bg-slate-200 dark:hover:bg-neutral-900'}`;
                 dBtn.onclick = () => loadSection(key);
                 dBtn.innerHTML = `<i class="fa-solid fa-folder-closed"></i> <span>${key}</span>`;
                 desktopNav.appendChild(dBtn);
 
-                // Mobile Drawer Item
                 const mBtn = document.createElement('button');
-                mBtn.className = `w-full text-left p-4 rounded-xl flex items-center justify-between border ${isSelected ? 'bg-spotify/10 border-spotify text-spotify font-bold' : 'bg-slate-50 dark:bg-neutral-800 border-slate-200 dark:border-neutral-700'}`;
-                mBtn.onclick = () => {
-                    loadSection(key);
-                    closeSubjectDrawer();
-                };
+                mBtn.className = `w-full text-left p-4 rounded-xl flex items-center justify-between border transition ${isSelected ? 'bg-spotify/10 border-spotify text-spotify font-bold' : 'bg-slate-50 dark:bg-neutral-800 border-slate-200 dark:border-neutral-700'}`;
+                mBtn.onclick = () => { loadSection(key); closeSubjectDrawer(); };
                 mBtn.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <i class="fa-solid fa-book text-spotify"></i>
@@ -363,30 +344,41 @@
             });
         }
 
-        // Drawer Animations
         function openSubjectDrawer() {
-            const drawer = document.getElementById('subjectDrawer');
-            const overlay = document.getElementById('drawerOverlay');
-            const content = document.getElementById('drawerContent');
-
-            drawer.classList.remove('pointer-events-none');
-            overlay.classList.remove('opacity-0');
-            content.classList.remove('translate-y-full');
+            document.getElementById('subjectDrawer').classList.remove('pointer-events-none');
+            document.getElementById('drawerOverlay').classList.remove('opacity-0');
+            document.getElementById('drawerContent').classList.remove('translate-y-full');
         }
 
         function closeSubjectDrawer() {
-            const drawer = document.getElementById('subjectDrawer');
-            const overlay = document.getElementById('drawerOverlay');
-            const content = document.getElementById('drawerContent');
-
-            overlay.classList.add('opacity-0');
-            content.classList.add('translate-y-full');
-            setTimeout(() => {
-                drawer.classList.add('pointer-events-none');
-            }, 350);
+            document.getElementById('drawerOverlay').classList.add('opacity-0');
+            document.getElementById('drawerContent').classList.add('translate-y-full');
+            setTimeout(() => document.getElementById('subjectDrawer').classList.add('pointer-events-none'), 350);
         }
 
-        // Section Loading
+        // Direct Cloudinary Force Download Generator
+        function getDirectDownloadUrl(originalUrl, filename) {
+            if (originalUrl.includes('cloudinary.com')) {
+                // Attach attachment flag for direct browser file download
+                const cleanFilename = filename.replace(/[^a-zA-Z0-9.-]/g, "_");
+                return originalUrl.replace('/upload/', `/upload/fl_attachment:${cleanFilename}/`);
+            }
+            return originalUrl;
+        }
+
+        // Single Track Direct Download Execution
+        function triggerSingleDownload(url, title) {
+            const downloadUrl = getDirectDownloadUrl(url, `${title}.mp3`);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.setAttribute('download', `${title}.mp3`);
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // Section Track List Loader
         function loadSection(key) {
             currentSectionKey = key;
             document.getElementById('mobileSubjectBtnLabel').innerText = key;
@@ -400,8 +392,10 @@
             container.innerHTML = '';
 
             data.tracks.forEach((track, index) => {
+                const isCurrentPlaying = (currentSectionKey === key && currentTrackIndex === index && isPlaying);
                 const card = document.createElement('div');
-                card.className = "flex items-center justify-between p-3.5 rounded-2xl bg-white dark:bg-neutral-900 hover:bg-slate-100 dark:hover:bg-spotifyHover transition border border-slate-200 dark:border-neutral-800 shadow-sm";
+                card.className = `track-card flex items-center justify-between p-3.5 rounded-2xl transition border ${isCurrentPlaying ? 'bg-spotify/10 border-spotify' : 'bg-white dark:bg-neutral-900 hover:bg-slate-100 dark:hover:bg-spotifyHover border-slate-200 dark:border-neutral-800'} shadow-sm`;
+                
                 card.innerHTML = `
                     <div class="flex items-center space-x-3.5 flex-1 pr-2 overflow-hidden cursor-pointer" onclick="playTrack(${index})">
                         <span class="w-7 text-center text-xs font-mono font-bold text-spotify">${track.id}</span>
@@ -411,51 +405,47 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <button onclick="playTrack(${index})" class="p-2 text-spotify"><i class="fa-solid fa-circle-play text-2xl"></i></button>
-                        <a href="${track.src}" download="${track.title}.mp3" class="p-2 text-slate-400 hover:text-slate-800 dark:hover:text-white"><i class="fa-solid fa-download text-sm"></i></a>
+                        <button onclick="playTrack(${index})" class="p-2 text-spotify transition active:scale-90">
+                            <i class="fa-solid ${isCurrentPlaying ? 'fa-circle-pause' : 'fa-circle-play'} text-2xl"></i>
+                        </button>
+                        <button onclick="triggerSingleDownload('${track.src}', '${track.title}')" class="p-2 text-slate-400 hover:text-spotify transition active:scale-90" title="Direct Download">
+                            <i class="fa-solid fa-download text-sm"></i>
+                        </button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Audio Player Controls & State Management
+        // Audio Player Controls
         function playTrack(index, autoPlay = true, seekTime = 0) {
             currentTrackIndex = index;
             const track = syllabusData[currentSectionKey].tracks[index];
             
-            if (audio.src !== window.location.origin + '/' + track.src && !audio.src.endsWith(track.src)) {
+            if (audio.src !== track.src && !audio.src.endsWith(track.src)) {
                 audio.src = track.src;
             }
 
             document.getElementById('playerTrackTitle').innerText = track.title;
             document.getElementById('playerTrackSection').innerText = syllabusData[currentSectionKey].title;
-            document.getElementById('playerDownloadBtn').href = track.src;
-            document.getElementById('playerDownloadBtn').download = `${track.title}.mp3`;
 
-            if (seekTime > 0) {
-                audio.currentTime = seekTime;
-            }
+            if (seekTime > 0) audio.currentTime = seekTime;
 
             if (autoPlay) {
                 audio.play();
                 isPlaying = true;
             }
             updatePlayIcons();
+            loadSection(currentSectionKey);
         }
 
         function togglePlay() {
-            if (!audio.src) {
-                playTrack(0);
-                return;
-            }
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                audio.play();
-            }
+            if (!audio.src) { playTrack(0); return; }
+            if (isPlaying) audio.pause();
+            else audio.play();
             isPlaying = !isPlaying;
             updatePlayIcons();
+            loadSection(currentSectionKey);
         }
 
         function updatePlayIcons() {
@@ -466,18 +456,18 @@
 
         function playNextTrack() {
             const tracks = syllabusData[currentSectionKey].tracks;
-            if (currentTrackIndex < tracks.length - 1) {
-                playTrack(currentTrackIndex + 1);
-            }
+            if (currentTrackIndex < tracks.length - 1) playTrack(currentTrackIndex + 1);
         }
 
         function playPrevTrack() {
-            if (currentTrackIndex > 0) {
-                playTrack(currentTrackIndex - 1);
-            }
+            if (currentTrackIndex > 0) playTrack(currentTrackIndex - 1);
         }
 
-        // Audio Engine Event Listeners & Time Persistence
+        function downloadCurrentTrack() {
+            const track = syllabusData[currentSectionKey].tracks[currentTrackIndex];
+            if (track) triggerSingleDownload(track.src, track.title);
+        }
+
         function setupAudioEvents() {
             const progress = document.getElementById('progressBar');
 
@@ -486,8 +476,6 @@
                     progress.value = (audio.currentTime / audio.duration) * 100;
                     document.getElementById('currentTime').innerText = formatTime(audio.currentTime);
                     document.getElementById('totalDuration').innerText = formatTime(audio.duration);
-
-                    // Save Progress to Local Storage
                     savePlaybackState();
                 }
             };
@@ -503,13 +491,8 @@
             audio.onended = () => playNextTrack();
         }
 
-        // Save & Restore Playback Position
         function savePlaybackState() {
-            const state = {
-                section: currentSectionKey,
-                index: currentTrackIndex,
-                time: audio.currentTime
-            };
+            const state = { section: currentSectionKey, index: currentTrackIndex, time: audio.currentTime };
             localStorage.setItem('ani_last_playback', JSON.stringify(state));
         }
 
@@ -523,9 +506,7 @@
                         loadSection(currentSectionKey);
                         playTrack(state.index, false, state.time);
                     }
-                } catch (e) {
-                    console.error("Could not restore last state", e);
-                }
+                } catch (e) { console.error("Restore state error", e); }
             }
         }
 
@@ -535,24 +516,52 @@
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        function downloadEntireSection() {
+        // Reliable Multi-file Bulk Download via JSZip Engine
+        async function downloadEntireSection() {
             const tracks = syllabusData[currentSectionKey].tracks;
-            tracks.forEach(t => {
-                const a = document.createElement('a');
-                a.href = t.src;
-                a.download = `${t.title}.mp3`;
-                a.click();
-            });
+            const btnText = document.getElementById('bulkDownloadBtnText');
+            const btnIcon = document.getElementById('bulkDownloadIcon');
+            const btn = document.getElementById('bulkDownloadBtn');
+
+            btn.disabled = true;
+            btnIcon.className = "fa-solid fa-spinner fa-spin";
+            
+            const zip = new JSZip();
+            const folder = zip.folder(currentSectionKey);
+
+            try {
+                for (let i = 0; i < tracks.length; i++) {
+                    const t = tracks[i];
+                    btnText.innerText = `Preparing (${i + 1}/${tracks.length})...`;
+                    const downloadUrl = getDirectDownloadUrl(t.src, `${t.title}.mp3`);
+                    
+                    const response = await fetch(downloadUrl);
+                    const blob = await response.blob();
+                    folder.file(`${t.id} - ${t.title}.mp3`, blob);
+                }
+
+                btnText.innerText = "Zipping Files...";
+                const content = await zip.generateAsync({ type: "blob" });
+                saveAs(content, `${currentSectionKey}_All_Audios.zip`);
+
+            } catch (err) {
+                alert("Direct ZIP creation encountered an issue. Starting standard downloads.");
+                tracks.forEach(t => triggerSingleDownload(t.src, t.title));
+            } finally {
+                btn.disabled = false;
+                btnIcon.className = "fa-solid fa-cloud-arrow-down";
+                btnText.innerText = "Download All Section Audios (ZIP)";
+            }
         }
 
-        // PWA Installation Trigger Logic
+        // PWA App Installation Handler
         function setupPWA() {
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredPrompt = e;
                 
-                document.getElementById('pwaBannerMobile').classList.remove('hidden');
-                document.getElementById('pwaInstallBtnDesktop').classList.remove('hidden');
+                document.getElementById('pwaBannerMobile')?.classList.remove('hidden');
+                document.getElementById('pwaInstallBtnDesktop')?.classList.remove('hidden');
             });
 
             const triggerPrompt = () => {
@@ -560,14 +569,17 @@
                     deferredPrompt.prompt();
                     deferredPrompt.userChoice.then(() => {
                         deferredPrompt = null;
-                        document.getElementById('pwaBannerMobile').classList.add('hidden');
-                        document.getElementById('pwaInstallBtnDesktop').classList.add('hidden');
+                        document.getElementById('pwaBannerMobile')?.classList.add('hidden');
+                        document.getElementById('pwaInstallBtnDesktop')?.classList.add('hidden');
                     });
+                } else {
+                    alert("App installation ready! If prompt didn't open, tap browser menu (⋮) -> 'Add to Home screen'");
                 }
             };
 
             document.getElementById('pwaInstallBtnMobile').onclick = triggerPrompt;
             document.getElementById('pwaInstallBtnDesktop').onclick = triggerPrompt;
+            document.getElementById('pwaInstallBtnTopMobile').onclick = triggerPrompt;
         }
     </script>
 </body>
