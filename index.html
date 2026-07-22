@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ani Audio Studio - English Department</title>
     
-    <!-- WhatsApp & Social Media Preview Meta Tags (Open Graph) -->
+    <!-- Open Graph / Social Media Preview -->
     <meta property="og:title" content="Ani Audio Studio - English Department">
-    <meta property="og:description" content="Audio lectures, notes, and syllabus audio resources for English Literature students.">
+    <meta property="og:description" content="Audio lectures, notes, and syllabus audio resources.">
     <meta property="og:image" content="https://res.cloudinary.com/hpejutzb/image/upload/v1784702297/logo.png">
-    <meta property="og:url" content="https://aniaudiostudio.com">
     <meta property="og:type" content="website">
 
-    <!-- PWA Web App Manifest -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkFuaSBBdWRpbyBTdHVkaW8iLAogICJzaG9ydF9uYW1lIjogIkFuaSBBdWRpbyIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxMjEyMTIiLAogICJ0aGVtZV9jb2xvcIjogIiMxREI5NTQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcud2lkZW1hcC5jb201MTIvMjg4Ni8yODg2Njc0LnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#121212">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,15 +34,9 @@
             }
         }
     </script>
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- JSZip and FileSaver for Bulk ZIP Downloads -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <style>
-        /* Smooth Animations */
         .drawer-overlay { transition: opacity 0.3s ease-in-out; }
         .drawer-content { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -52,7 +45,7 @@
         .track-card:hover { transform: translateY(-1px); }
     </style>
 </head>
-<body class="bg-slate-50 dark:bg-spotifyDark text-slate-900 dark:text-white font-sans antialiased selection:bg-spotify selection:text-black transition-colors duration-200">
+<body class="bg-slate-50 dark:bg-spotifyDark text-slate-900 dark:text-white font-sans antialiased selection:bg-spotify selection:text-black">
 
     <div class="flex h-screen overflow-hidden pb-28 md:pb-24">
         
@@ -66,7 +59,6 @@
                         <p class="text-xs text-slate-500 dark:text-neutral-400 mt-1">English Department</p>
                     </div>
                 </div>
-
                 <nav class="space-y-2" id="desktopNav"></nav>
             </div>
 
@@ -84,10 +76,10 @@
             </div>
         </aside>
 
-        <!-- Main Content Area -->
+        <!-- Main Area -->
         <main class="flex-1 overflow-y-auto p-4 md:p-8 no-scrollbar">
             
-            <!-- Mobile Sticky Top Navigation Bar -->
+            <!-- Mobile Sticky Top Nav -->
             <div class="flex md:hidden justify-between items-center mb-4 bg-slate-200/60 dark:bg-neutral-900/60 p-3 rounded-2xl backdrop-blur-md sticky top-0 z-20 border border-slate-300 dark:border-neutral-800">
                 <div class="flex items-center space-x-2">
                     <div class="w-8 h-8 rounded-full bg-spotify flex items-center justify-center text-black font-bold text-sm">A</div>
@@ -95,14 +87,13 @@
                 </div>
                 
                 <div class="flex items-center space-x-2">
-                    <button id="pwaInstallBtnTopMobile" class="bg-spotify/20 text-spotify hover:bg-spotify hover:text-black font-bold text-xs px-2.5 py-1.5 rounded-xl transition flex items-center space-x-1">
+                    <button id="pwaInstallBtnTopMobile" class="bg-spotify/20 text-spotify font-bold text-xs px-2.5 py-1.5 rounded-xl flex items-center space-x-1">
                         <i class="fa-solid fa-down-to-bracket"></i>
                         <span>App</span>
                     </button>
                     <button onclick="toggleTheme()" class="p-2 rounded-full bg-slate-300 dark:bg-neutral-800 text-xs">
                         <i id="themeIconMobile" class="fa-solid fa-moon"></i>
                     </button>
-                    <!-- Subject Selector Switch -->
                     <button onclick="openSubjectDrawer()" class="bg-spotify text-black font-bold text-xs px-3 py-2 rounded-xl flex items-center space-x-2 shadow-md">
                         <i class="fa-solid fa-book-open"></i>
                         <span id="mobileSubjectBtnLabel">Choose Subject</span>
@@ -111,17 +102,8 @@
                 </div>
             </div>
 
-            <!-- Install App Banner (Mobile PWA Prompt) -->
-            <div id="pwaBannerMobile" class="hidden mb-4 p-3 bg-spotify/10 border border-spotify/30 rounded-xl flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <i class="fa-solid fa-mobile-screen text-spotify text-lg"></i>
-                    <span class="text-xs font-semibold">Install Ani Audio app on your phone</span>
-                </div>
-                <button id="pwaInstallBtnMobile" class="bg-spotify text-black text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">Install</button>
-            </div>
-
-            <!-- Subject Banner Header -->
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4 bg-slate-100 dark:bg-neutral-800/40 p-5 md:p-6 rounded-2xl border border-slate-200 dark:border-neutral-800">
+            <!-- Subject Banner -->
+            <div class="flex flex-col justify-between items-start mb-6 gap-4 bg-slate-100 dark:bg-neutral-800/40 p-5 md:p-6 rounded-2xl border border-slate-200 dark:border-neutral-800">
                 <div>
                     <span class="text-spotify text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
                         <i class="fa-solid fa-layer-group"></i> Active Course Section
@@ -129,22 +111,15 @@
                     <h2 id="currentPlaylistTitle" class="text-2xl md:text-4xl font-black mt-1">MJC-5 English</h2>
                     <p id="currentPlaylistSubtitle" class="text-slate-500 dark:text-neutral-400 mt-1 text-xs md:text-sm">American Literature Syllabus Notes</p>
                 </div>
-                
-                <!-- Bulk Section Download Button -->
-                <button id="bulkDownloadBtn" onclick="downloadEntireSection()" class="w-full md:w-auto bg-spotify hover:scale-105 active:scale-95 transition text-black font-bold px-5 py-2.5 rounded-xl md:rounded-full flex items-center justify-center space-x-2 shadow-md text-sm">
-                    <i id="bulkDownloadIcon" class="fa-solid fa-cloud-arrow-down"></i>
-                    <span id="bulkDownloadBtnText">Download All Section Audios (ZIP)</span>
-                </button>
             </div>
 
-            <!-- Track List -->
+            <!-- Track Container -->
             <div class="space-y-2.5" id="trackListContainer"></div>
 
         </main>
-
     </div>
 
-    <!-- Mobile Subject Selection Drawer / Modal -->
+    <!-- Mobile Drawer -->
     <div id="subjectDrawer" class="fixed inset-0 z-50 pointer-events-none">
         <div id="drawerOverlay" onclick="closeSubjectDrawer()" class="drawer-overlay absolute inset-0 bg-black/60 opacity-0 transition-opacity"></div>
         <div id="drawerContent" class="drawer-content absolute bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 rounded-t-3xl p-6 border-t border-slate-200 dark:border-neutral-800 transform translate-y-full pointer-events-auto max-h-[80vh] overflow-y-auto">
@@ -162,7 +137,7 @@
         </div>
     </div>
 
-    <!-- Sticky Bottom Player -->
+    <!-- Bottom Audio Player Bar -->
     <footer class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-slate-200 dark:border-neutral-800 p-3 md:px-6 flex flex-col md:flex-row items-center justify-between gap-2 z-40">
         <div class="flex items-center justify-between w-full md:w-1/4">
             <div class="flex items-center space-x-3 overflow-hidden">
@@ -174,7 +149,6 @@
                     <p id="playerTrackSection" class="text-[11px] text-slate-500 dark:text-neutral-400 truncate">Ani Audio Studio</p>
                 </div>
             </div>
-            
             <button id="mobilePlayBtn" onclick="togglePlay()" class="md:hidden w-10 h-10 rounded-full bg-spotify text-black flex items-center justify-center flex-shrink-0 shadow">
                 <i class="fa-solid fa-play text-sm"></i>
             </button>
@@ -199,12 +173,10 @@
         <div class="hidden md:flex items-center justify-end space-x-3 w-1/4 text-slate-400">
             <i class="fa-solid fa-volume-high text-xs"></i>
             <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1" class="w-20 h-1 bg-slate-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-spotify">
-            <button id="playerDownloadBtn" onclick="downloadCurrentTrack()" class="hover:text-spotify ml-4 text-slate-700 dark:text-white transition"><i class="fa-solid fa-download"></i></button>
         </div>
     </footer>
 
-    <!-- Audio Element -->
-    <audio id="audioEngine"></audio>
+    <audio id="audioEngine" crossorigin="anonymous"></audio>
 
     <script>
         const syllabusData = {
@@ -275,12 +247,10 @@
             }
         };
 
-        // App States
         let currentSectionKey = "MJC-5";
         let currentTrackIndex = 0;
         let isPlaying = false;
-        let deferredPrompt;
-
+        let deferredPrompt = null;
         const audio = document.getElementById('audioEngine');
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -288,11 +258,9 @@
             renderNavs();
             loadSection(currentSectionKey);
             setupAudioEvents();
-            restoreLastPlaybackState();
-            setupPWA();
+            registerServiceWorker();
         });
 
-        // Theme Configuration
         function initTheme() {
             const savedTheme = localStorage.getItem('ani_theme') || 'dark';
             if (savedTheme === 'light') document.documentElement.classList.remove('dark');
@@ -312,7 +280,6 @@
             document.getElementById('themeIconMobile').className = `fa-solid ${iconClass}`;
         }
 
-        // Navigation Renderer
         function renderNavs() {
             const desktopNav = document.getElementById('desktopNav');
             const drawerNav = document.getElementById('mobileDrawerNav');
@@ -320,7 +287,7 @@
 
             Object.keys(syllabusData).forEach(key => {
                 const isSelected = key === currentSectionKey;
-
+                
                 const dBtn = document.createElement('button');
                 dBtn.className = `w-full text-left px-4 py-3 rounded-xl font-semibold flex items-center space-x-3 transition ${isSelected ? 'bg-spotify text-black font-bold shadow-sm' : 'text-slate-600 dark:text-neutral-400 hover:bg-slate-200 dark:hover:bg-neutral-900'}`;
                 dBtn.onclick = () => loadSection(key);
@@ -356,29 +323,6 @@
             setTimeout(() => document.getElementById('subjectDrawer').classList.add('pointer-events-none'), 350);
         }
 
-        // Direct Cloudinary Force Download Generator
-        function getDirectDownloadUrl(originalUrl, filename) {
-            if (originalUrl.includes('cloudinary.com')) {
-                // Attach attachment flag for direct browser file download
-                const cleanFilename = filename.replace(/[^a-zA-Z0-9.-]/g, "_");
-                return originalUrl.replace('/upload/', `/upload/fl_attachment:${cleanFilename}/`);
-            }
-            return originalUrl;
-        }
-
-        // Single Track Direct Download Execution
-        function triggerSingleDownload(url, title) {
-            const downloadUrl = getDirectDownloadUrl(url, `${title}.mp3`);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.setAttribute('download', `${title}.mp3`);
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        // Section Track List Loader
         function loadSection(key) {
             currentSectionKey = key;
             document.getElementById('mobileSubjectBtnLabel').innerText = key;
@@ -408,33 +352,22 @@
                         <button onclick="playTrack(${index})" class="p-2 text-spotify transition active:scale-90">
                             <i class="fa-solid ${isCurrentPlaying ? 'fa-circle-pause' : 'fa-circle-play'} text-2xl"></i>
                         </button>
-                        <button onclick="triggerSingleDownload('${track.src}', '${track.title}')" class="p-2 text-slate-400 hover:text-spotify transition active:scale-90" title="Direct Download">
-                            <i class="fa-solid fa-download text-sm"></i>
-                        </button>
                     </div>
                 `;
                 container.appendChild(card);
             });
         }
 
-        // Audio Player Controls
-        function playTrack(index, autoPlay = true, seekTime = 0) {
+        function playTrack(index) {
             currentTrackIndex = index;
             const track = syllabusData[currentSectionKey].tracks[index];
-            
-            if (audio.src !== track.src && !audio.src.endsWith(track.src)) {
-                audio.src = track.src;
-            }
+            if (audio.src !== track.src) audio.src = track.src;
 
             document.getElementById('playerTrackTitle').innerText = track.title;
             document.getElementById('playerTrackSection').innerText = syllabusData[currentSectionKey].title;
 
-            if (seekTime > 0) audio.currentTime = seekTime;
-
-            if (autoPlay) {
-                audio.play();
-                isPlaying = true;
-            }
+            audio.play();
+            isPlaying = true;
             updatePlayIcons();
             loadSection(currentSectionKey);
         }
@@ -463,51 +396,18 @@
             if (currentTrackIndex > 0) playTrack(currentTrackIndex - 1);
         }
 
-        function downloadCurrentTrack() {
-            const track = syllabusData[currentSectionKey].tracks[currentTrackIndex];
-            if (track) triggerSingleDownload(track.src, track.title);
-        }
-
         function setupAudioEvents() {
             const progress = document.getElementById('progressBar');
-
             audio.ontimeupdate = () => {
                 if (audio.duration) {
                     progress.value = (audio.currentTime / audio.duration) * 100;
                     document.getElementById('currentTime').innerText = formatTime(audio.currentTime);
                     document.getElementById('totalDuration').innerText = formatTime(audio.duration);
-                    savePlaybackState();
                 }
             };
-
-            progress.oninput = () => {
-                audio.currentTime = (progress.value / 100) * audio.duration;
-            };
-
-            document.getElementById('volumeSlider').oninput = (e) => {
-                audio.volume = e.target.value;
-            };
-
+            progress.oninput = () => audio.currentTime = (progress.value / 100) * audio.duration;
+            document.getElementById('volumeSlider').oninput = (e) => audio.volume = e.target.value;
             audio.onended = () => playNextTrack();
-        }
-
-        function savePlaybackState() {
-            const state = { section: currentSectionKey, index: currentTrackIndex, time: audio.currentTime };
-            localStorage.setItem('ani_last_playback', JSON.stringify(state));
-        }
-
-        function restoreLastPlaybackState() {
-            const savedState = localStorage.getItem('ani_last_playback');
-            if (savedState) {
-                try {
-                    const state = JSON.parse(savedState);
-                    if (syllabusData[state.section]) {
-                        currentSectionKey = state.section;
-                        loadSection(currentSectionKey);
-                        playTrack(state.index, false, state.time);
-                    }
-                } catch (e) { console.error("Restore state error", e); }
-            }
         }
 
         function formatTime(secs) {
@@ -516,71 +416,32 @@
             return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // Reliable Multi-file Bulk Download via JSZip Engine
-        async function downloadEntireSection() {
-            const tracks = syllabusData[currentSectionKey].tracks;
-            const btnText = document.getElementById('bulkDownloadBtnText');
-            const btnIcon = document.getElementById('bulkDownloadIcon');
-            const btn = document.getElementById('bulkDownloadBtn');
-
-            btn.disabled = true;
-            btnIcon.className = "fa-solid fa-spinner fa-spin";
-            
-            const zip = new JSZip();
-            const folder = zip.folder(currentSectionKey);
-
-            try {
-                for (let i = 0; i < tracks.length; i++) {
-                    const t = tracks[i];
-                    btnText.innerText = `Preparing (${i + 1}/${tracks.length})...`;
-                    const downloadUrl = getDirectDownloadUrl(t.src, `${t.title}.mp3`);
-                    
-                    const response = await fetch(downloadUrl);
-                    const blob = await response.blob();
-                    folder.file(`${t.id} - ${t.title}.mp3`, blob);
-                }
-
-                btnText.innerText = "Zipping Files...";
-                const content = await zip.generateAsync({ type: "blob" });
-                saveAs(content, `${currentSectionKey}_All_Audios.zip`);
-
-            } catch (err) {
-                alert("Direct ZIP creation encountered an issue. Starting standard downloads.");
-                tracks.forEach(t => triggerSingleDownload(t.src, t.title));
-            } finally {
-                btn.disabled = false;
-                btnIcon.className = "fa-solid fa-cloud-arrow-down";
-                btnText.innerText = "Download All Section Audios (ZIP)";
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('PWA SW Registered:', reg.scope))
+                    .catch(err => console.error('PWA SW Registration Failed:', err));
             }
         }
 
-        // PWA App Installation Handler
-        function setupPWA() {
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                
-                document.getElementById('pwaBannerMobile')?.classList.remove('hidden');
-                document.getElementById('pwaInstallBtnDesktop')?.classList.remove('hidden');
-            });
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
 
-            const triggerPrompt = () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then(() => {
-                        deferredPrompt = null;
-                        document.getElementById('pwaBannerMobile')?.classList.add('hidden');
-                        document.getElementById('pwaInstallBtnDesktop')?.classList.add('hidden');
-                    });
-                } else {
-                    alert("App installation ready! If prompt didn't open, tap browser menu (⋮) -> 'Add to Home screen'");
-                }
-            };
-
-            document.getElementById('pwaInstallBtnMobile').onclick = triggerPrompt;
-            document.getElementById('pwaInstallBtnDesktop').onclick = triggerPrompt;
-            document.getElementById('pwaInstallBtnTopMobile').onclick = triggerPrompt;
+        function promptInstallPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choice) => {
+                    deferredPrompt = null;
+                });
+            } else {
+                alert("To Install: Open browser menu (⋮ or Share icon) -> Select 'Add to Home screen' or 'Install App'.");
+            }
         }
+
+        document.getElementById('pwaInstallBtnDesktop').onclick = promptInstallPWA;
+        document.getElementById('pwaInstallBtnTopMobile').onclick = promptInstallPWA;
     </script>
 </body>
 </html>
